@@ -1,0 +1,67 @@
+<Window x:Class="Flavouru.Desktop.RecipeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Детали рецепта" Height="600" Width="600"
+        Background="#F0F0F0">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Название:"/>
+        <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtTitle"/>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Описание:"/>
+        <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtDescription"/>
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Инструкции:"/>
+        <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtInstructions" 
+                 AcceptsReturn="True" TextWrapping="Wrap" 
+                 VerticalScrollBarVisibility="Auto"
+                 Height="150"/>
+
+        <Grid Grid.Row="3" Grid.Column="1" Margin="0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Margin="0,0,5,0">
+                <Label Content="Время подготовки (мин):"/>
+                <TextBox x:Name="txtPrepTime"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Margin="5,0">
+                <Label Content="Время готовки (мин):"/>
+                <TextBox x:Name="txtCookTime"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Margin="5,0,0,0">
+                <Label Content="Количество порций:"/>
+                <TextBox x:Name="txtServings"/>
+            </StackPanel>
+        </Grid>
+
+        <Label Grid.Row="4" Grid.Column="0" Content="Категории:"/>
+        <ListBox Grid.Row="4" Grid.Column="1" x:Name="lstCategories" SelectionMode="Multiple" Height="100"/>
+
+        <Label Grid.Row="5" Grid.Column="0" Content="Теги:"/>
+        <ListBox Grid.Row="5" Grid.Column="1" x:Name="lstTags" SelectionMode="Multiple" Height="100"/>
+
+        <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" 
+                    Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button x:Name="btnSave" Content="Сохранить" Width="100" Click="btnSave_Click"/>
+            <Button x:Name="btnCancel" Content="Отмена" Width="100" Margin="10,0,0,0" Click="btnCancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
+

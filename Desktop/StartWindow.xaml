@@ -1,0 +1,25 @@
+<Window x:Class="Flavouru.Desktop.StartWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Добро пожаловать в Flavouru" Height="300" Width="400"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="Добро пожаловать в Flavouru!" 
+                       FontSize="24" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,0,0,20"/>
+            <Button Content="Войти" 
+                    Width="200" 
+                    Height="40" 
+                    Margin="0,10" 
+                    Click="LoginButton_Click"/>
+            <Button Content="Зарегистрироваться" 
+                    Width="200" 
+                    Height="40" 
+                    Margin="0,10" 
+                    Click="RegisterButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
+

@@ -1,0 +1,42 @@
+<Window x:Class="Flavouru.Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Flavouru - Менеджер рецептов" Height="600" Width="800"
+        Background="#F0F0F0">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="White" Margin="10" Padding="10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="txtWelcome" VerticalAlignment="Center" Margin="0,0,20,0"/>
+                <Button x:Name="btnAddRecipe" Content="Добавить рецепт" Width="120" Click="btnAddRecipe_Click" Margin="0,0,10,0"/>
+                <Button x:Name="btnCategories" Content="Категории" Width="100" Click="btnCategories_Click" Margin="0,0,10,0"/>
+                <Button x:Name="btnTags" Content="Теги" Width="80" Click="btnTags_Click" Margin="0,0,10,0"/>
+                <Button x:Name="btnLogout" Content="Выйти" Width="80" Click="btnLogout_Click"/>
+            </StackPanel>
+        </Border>
+
+        <ListView x:Name="recipesListView" Grid.Row="1" Margin="10" SelectionChanged="recipesListView_SelectionChanged">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="16"/>
+                        <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Время подготовки: " FontStyle="Italic"/>
+                            <TextBlock Text="{Binding PrepTime}" FontStyle="Italic"/>
+                            <TextBlock Text=" мин, Время готовки: " FontStyle="Italic"/>
+                            <TextBlock Text="{Binding CookTime}" FontStyle="Italic"/>
+                            <TextBlock Text=" мин, Порции: " FontStyle="Italic"/>
+                            <TextBlock Text="{Binding Servings}" FontStyle="Italic"/>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Window>
+
