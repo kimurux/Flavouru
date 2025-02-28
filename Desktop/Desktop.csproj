@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Image\bg.png" />
+    <None Remove="Image\main.png" />
+    <None Remove="Image\recipe.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -18,6 +24,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Image\bg.png" />
+    <Resource Include="Image\main.png" />
+    <Resource Include="Image\recipe.png" />
   </ItemGroup>
 
 </Project>

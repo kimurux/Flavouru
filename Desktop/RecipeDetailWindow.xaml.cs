@@ -12,7 +12,7 @@ namespace Flavouru.Desktop
         private readonly HttpClient _httpClient;
         private readonly RecipeDto _recipe;
         private readonly UserDto _currentUser;
-        private const string ApiBaseUrl = "http://localhost:5000/api/"; 
+        private const string ApiBaseUrl = "http://localhost:5000/api/";
 
         public RecipeDetailWindow(RecipeDto recipe, UserDto currentUser)
         {
@@ -23,57 +23,31 @@ namespace Flavouru.Desktop
             };
             _recipe = recipe;
             _currentUser = currentUser;
-            LoadRecipeDetails();
-            LoadComments();
+            DataContext = _recipe;
         }
 
-        private void LoadRecipeDetails()
+        private void btnViewComments_Click(object sender, RoutedEventArgs e)
         {
-            txtTitle.Text = _recipe.Title;
-            txtDescription.Text = _recipe.Description;
-            txtPrepTime.Text = _recipe.PrepTime.ToString();
-            txtCookTime.Text = _recipe.CookTime.ToString();
-            txtServings.Text = _recipe.Servings.ToString();
-            txtInstructions.Text = _recipe.Instructions;
-            txtCategories.Text = string.Join(", ", _recipe.Categories);
-            txtTags.Text = string.Join(", ", _recipe.Tags);
-        }
-
-        private async void LoadComments()
-        {
-            try
-            {
-                var comments = await _httpClient.GetFromJsonAsync<List<CommentDto>>($"comments/recipe/{_recipe.Id}");
-                commentsListBox.ItemsSource = comments;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при загрузке комментариев: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            var commentsWindow = new CommentsWindow(_recipe.Id, _currentUser);
+            commentsWindow.Show();
         }
 
         private async void btnSendComment_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtNewComment.Text))
-            {
-                MessageBox.Show("Пожалуйста, введите комментарий", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
             try
             {
-                var newComment = new CreateCommentDto
+                var comment = new CreateCommentDto
                 {
-                    Content = txtNewComment.Text,
+                    Content = txtComment.Text,
                     RecipeId = _recipe.Id,
                     UserId = _currentUser.Id
                 };
 
-                var response = await _httpClient.PostAsJsonAsync("/comments", newComment);
+                var response = await _httpClient.PostAsJsonAsync("comments", comment);
                 if (response.IsSuccessStatusCode)
                 {
-                    txtNewComment.Clear();
-                    LoadComments();
+                    MessageBox.Show("Комментарий успешно добавлен", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    txtComment.Clear();
                 }
                 else
                 {

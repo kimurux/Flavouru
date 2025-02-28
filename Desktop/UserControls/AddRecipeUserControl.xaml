@@ -1,0 +1,52 @@
+<UserControl x:Class="Flavouru.Desktop.UserControls.AddRecipeUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <ScrollViewer>
+            <StackPanel Margin="20">
+                <TextBlock Text="Добавление нового рецепта" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+                
+                <TextBlock Text="Название:"/>
+                <TextBox x:Name="txtTitle" Margin="0,0,0,10"/>
+                
+                <TextBlock Text="Описание:"/>
+                <TextBox x:Name="txtDescription" Height="60" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                
+                <TextBlock Text="Инструкции:"/>
+                <TextBox x:Name="txtInstructions" Height="100" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0" Margin="0,0,5,0">
+                        <TextBlock Text="Время подготовки (мин):"/>
+                        <TextBox x:Name="txtPrepTime"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="1" Margin="5,0">
+                        <TextBlock Text="Время готовки (мин):"/>
+                        <TextBox x:Name="txtCookTime"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="2" Margin="5,0,0,0">
+                        <TextBlock Text="Количество порций:"/>
+                        <TextBox x:Name="txtServings"/>
+                    </StackPanel>
+                </Grid>
+                
+                <TextBlock Text="Категории:" Margin="0,10,0,0"/>
+                <ListBox x:Name="lstCategories" SelectionMode="Multiple" Height="100" Margin="0,0,0,10"/>
+                
+                <TextBlock Text="Теги:"/>
+                <ListBox x:Name="lstTags" SelectionMode="Multiple" Height="100" Margin="0,0,0,20"/>
+                
+                <Button Content="Сохранить рецепт" Click="btnSaveRecipe_Click" Width="150" HorizontalAlignment="Left"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
+

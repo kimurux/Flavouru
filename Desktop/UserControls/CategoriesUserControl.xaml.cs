@@ -6,24 +6,22 @@ using System.Windows;
 using System.Windows.Controls;
 using Flavouru.Shared.DTOs;
 
-namespace Flavouru.Desktop
+namespace Flavouru.Desktop.UserControls
 {
-    public partial class CategoriesWindow : Window
+    public partial class CategoriesUserControl : UserControl
     {
         private readonly HttpClient _httpClient;
-        private const string ApiBaseUrl = "http://localhost:5000/api/"; // Добавлен слеш в конце
 
-        public CategoriesWindow()
+        public CategoriesUserControl()
         {
             InitializeComponent();
             _httpClient = new HttpClient
             {
-                BaseAddress = new Uri(ApiBaseUrl)
+                BaseAddress = new Uri("http://localhost:5000/api/")
             };
-            LoadCategories();
         }
 
-        private async void LoadCategories()
+        public async void LoadCategories()
         {
             try
             {
@@ -51,7 +49,7 @@ namespace Flavouru.Desktop
                     Name = txtNewCategory.Text
                 };
 
-                var response = await _httpClient.PostAsJsonAsync("/categories", newCategory);
+                var response = await _httpClient.PostAsJsonAsync("categories", newCategory);
                 if (response.IsSuccessStatusCode)
                 {
                     txtNewCategory.Clear();
@@ -70,7 +68,7 @@ namespace Flavouru.Desktop
 
         private async void btnDeleteCategory_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is FrameworkElement element && element.DataContext is CategoryDto category)
+            if (sender is Button button && button.DataContext is CategoryDto category)
             {
                 var result = MessageBox.Show($"Вы уверены, что хотите удалить категорию '{category.Name}'?", "Подтверждение удаления",
                     MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -79,7 +77,7 @@ namespace Flavouru.Desktop
                 {
                     try
                     {
-                        var response = await _httpClient.DeleteAsync($"/categories/{category.Id}");
+                        var response = await _httpClient.DeleteAsync($"categories/{category.Id}");
                         if (response.IsSuccessStatusCode)
                         {
                             LoadCategories();

@@ -1,0 +1,25 @@
+<UserControl x:Class="Flavouru.Desktop.UserControls.RecipesUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <ListView x:Name="recipesListView" SelectionChanged="recipesListView_SelectionChanged">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="16"/>
+                        <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Время подготовки: " FontStyle="Italic"/>
+                            <TextBlock Text="{Binding PrepTime}" FontStyle="Italic"/>
+                            <TextBlock Text=" мин, Время готовки: " FontStyle="Italic"/>
+                            <TextBlock Text="{Binding CookTime}" FontStyle="Italic"/>
+                            <TextBlock Text=" мин, Порции: " FontStyle="Italic"/>
+                            <TextBlock Text="{Binding Servings}" FontStyle="Italic"/>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>
+

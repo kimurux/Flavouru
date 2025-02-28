@@ -9,14 +9,14 @@ namespace Flavouru.Desktop
             InitializeComponent();
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             var loginWindow = new LoginWindow();
             loginWindow.Show();
             this.Close();
         }
 
-        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
             var registerWindow = new RegisterWindow();
             registerWindow.Show();

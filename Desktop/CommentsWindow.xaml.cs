@@ -83,7 +83,7 @@ namespace Flavouru.Desktop
                 loadingIndicator.Visibility = Visibility.Visible;
 
                 var comments = await _httpClient.GetFromJsonAsync<List<CommentDto>>($"comments/recipe/{_recipeId}?page={currentPage}&pageSize={PageSize}");
-
+                
                 if (comments == null || comments.Count == 0)
                 {
                     hasMoreComments = false;
@@ -129,7 +129,7 @@ namespace Flavouru.Desktop
                 if (response.IsSuccessStatusCode)
                 {
                     var createdComment = await response.Content.ReadFromJsonAsync<CommentDto>();
-                    Comments.Insert(0, createdComment); 
+                    Comments.Insert(0, createdComment); // Добавляем новый комментарий в начало списка
                     txtNewComment.Clear();
                 }
                 else
