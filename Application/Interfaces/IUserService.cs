@@ -12,4 +12,3 @@ namespace Flavouru.Application.Interfaces
         Task<bool> LogoutUserAsync(Guid userId);
     }
 }
-

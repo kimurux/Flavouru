@@ -5,16 +5,21 @@ using Flavouru.Domain.Entities;
 using Flavouru.Application.Interfaces;
 using Flavouru.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Flavouru.Infrastructure.Services
 {
     public class RecipeService : IRecipeService
     {
         private readonly FlavouruDbContext _context;
+        private readonly ILogger<RecipeService> _logger;
 
-        public RecipeService(FlavouruDbContext context)
+        public RecipeService(
+            FlavouruDbContext context,
+            ILogger<RecipeService> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<Recipe>> GetAllRecipesAsync()
@@ -37,27 +42,78 @@ namespace Flavouru.Infrastructure.Services
 
         public async Task<Recipe> CreateRecipeAsync(Recipe recipe)
         {
-            _context.Recipes.Add(recipe);
-            await _context.SaveChangesAsync();
-            return recipe;
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var user = await _context.Users.FindAsync(recipe.UserId);
+                if (user == null)
+                {
+                    _logger.LogWarning($"Attempted to create recipe for non-existent user ID: {recipe.UserId}");
+                    throw new InvalidOperationException($"User with ID {recipe.UserId} does not exist");
+                }
+
+                recipe.CreatedAt = DateTime.UtcNow;
+                _context.Recipes.Add(recipe);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+                return recipe;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, "Error creating recipe");
+                throw;
+            }
         }
 
         public async Task<Recipe> UpdateRecipeAsync(Recipe recipe)
         {
-            _context.Entry(recipe).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return recipe;
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                recipe.UpdatedAt = DateTime.UtcNow;
+                _context.Entry(recipe).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+                return recipe;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, "Error updating recipe");
+                throw;
+            }
         }
 
         public async Task DeleteRecipeAsync(Guid id)
         {
-            var recipe = await _context.Recipes.FindAsync(id);
-            if (recipe != null)
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
             {
-                _context.Recipes.Remove(recipe);
-                await _context.SaveChangesAsync();
+                var recipe = await _context.Recipes.FindAsync(id);
+                if (recipe != null)
+                {
+                    _context.Recipes.Remove(recipe);
+                    await _context.SaveChangesAsync();
+
+                    await transaction.CommitAsync();
+                }
+                else
+                {
+                    _logger.LogWarning($"Рецепт: {id}");
+                }
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, $"Error deleting recipe {id}");
+                throw;
             }
         }
     }
 }
-

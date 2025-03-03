@@ -13,6 +13,7 @@ namespace Flavouru.Infrastructure.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Media> Media { get; set; }
         public DbSet<ChatMessage> ChatMessages { get; set; }
+        public DbSet<UserSession> UserSessions { get; set; }
 
         public FlavouruDbContext(DbContextOptions<FlavouruDbContext> options)
             : base(options)

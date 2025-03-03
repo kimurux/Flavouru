@@ -15,6 +15,6 @@ namespace Flavouru.Domain.Entities
         public List<Recipe> Recipes { get; set; }
         public List<Comment> Comments { get; set; }
         public List<Rating> Ratings { get; set; }
+        public List<UserSession> Session {get; set;}
     }
 }
-
