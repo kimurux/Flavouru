@@ -1,7 +1,10 @@
 <Window x:Class="Flavouru.Desktop.RecipeDetailWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Детали рецепта" Height="450" Width="600">
+        Title="Детали рецепта" 
+        Height="700" Width="800"
+        MinWidth="650" MinHeight="550"
+        MaxWidth="1200" MaxHeight="900">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

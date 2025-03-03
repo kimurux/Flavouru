@@ -44,7 +44,7 @@ namespace Flavouru.Desktop
 
         private void btnLogout_Click(object sender, RoutedEventArgs e)
         {
-            var startWindow = new StartWindow();
+            var startWindow = new AuthWindow();
             startWindow.Show();
             this.Close();
         }

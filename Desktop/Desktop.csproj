@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <None Remove="Image\bg.png" />
+    <None Remove="Image\logo.png" />
+    <None Remove="Image\logofull.png" />
     <None Remove="Image\main.png" />
     <None Remove="Image\recipe.png" />
   </ItemGroup>
@@ -28,6 +30,8 @@
 
   <ItemGroup>
     <Resource Include="Image\bg.png" />
+    <Resource Include="Image\logo.png" />
+    <Resource Include="Image\logofull.png" />
     <Resource Include="Image\main.png" />
     <Resource Include="Image\recipe.png" />
   </ItemGroup>

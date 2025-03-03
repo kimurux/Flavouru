@@ -1,0 +1,207 @@
+<Window x:Class="Flavouru.Desktop.AuthWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Flavouru - Менеджер рецептов" 
+        Height="700" Width="800"
+        MinWidth="700" MinHeight="650"
+        MaxWidth="1200" MaxHeight="900">
+    <Window.Background>
+        <ImageBrush ImageSource="/Image/bg.png" Opacity="0.15" Stretch="UniformToFill"/>
+    </Window.Background>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Content Area - Contains all three views with visibility toggling -->
+        <Grid Grid.Row="1" Margin="0,40,0,0">
+            <!-- Welcome/Start View with integrated logo and title -->
+            <Border x:Name="startPanel"
+                    Background="{StaticResource SecondaryBackground}" 
+                    Width="350" 
+                    CornerRadius="8"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1"
+                    Padding="30"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="2" Direction="315" Opacity="0.2" BlurRadius="8"/>
+                </Border.Effect>
+                <StackPanel>
+                    <!-- Logo and Title Section -->
+                    <StackPanel HorizontalAlignment="Center" Margin="0,0,0,25">
+                        <Image Source="/Image/logo.png" 
+                               Width="80" Height="80" 
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,15"/>
+                        <TextBlock Text="Flavouru" 
+                                   FontSize="28" 
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource AccentText}"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+
+                    <!-- Buttons -->
+                    <Button Content="Войти" 
+                            Height="45" 
+                            Margin="0,0,0,15"
+                            Click="btnShowLogin_Click"/>
+                    <Button Content="Зарегистрироваться" 
+                            Height="45"
+                            Style="{StaticResource SecondaryButton}"
+                            Click="btnShowRegister_Click"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Login View -->
+            <Border x:Name="loginPanel"
+                    Background="{StaticResource SecondaryBackground}" 
+                    Width="350" 
+                    CornerRadius="8"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1"
+                    Padding="30"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="Collapsed">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="2" Direction="315" Opacity="0.2" BlurRadius="8"/>
+                </Border.Effect>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,25">
+                            <Image Source="/Image/logo.png" Width="40" Height="40" Margin="0,0,10,0"/>
+                            <TextBlock Text="Flavouru" 
+                                       VerticalAlignment="Center" 
+                                       FontSize="24" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="{StaticResource AccentText}"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Вход в систему" 
+                                   FontSize="22" 
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,25"/>
+
+                        <TextBlock Text="Имя пользователя:" Margin="0,0,0,5"/>
+                        <TextBox x:Name="txtLoginUsername" Margin="0,0,0,15"/>
+
+                        <TextBlock Text="Пароль:" Margin="0,0,0,5"/>
+                        <PasswordBox x:Name="txtLoginPassword" Margin="0,0,0,25"/>
+
+                        <Grid Margin="0,0,0,20">
+                            <CheckBox x:Name="chkRememberMe" Content="Запомнить меня" VerticalAlignment="Center"/>
+                            <TextBlock HorizontalAlignment="Right" 
+                               Text="Забыли пароль?" 
+                               Foreground="{StaticResource AccentText}"
+                               Cursor="Hand"
+                               MouseLeftButtonDown="forgotPassword_MouseLeftButtonDown"/>
+                        </Grid>
+
+                        <Button Content="Войти" 
+                            Height="45" 
+                            Margin="0,0,0,20"
+                            Click="btnLogin_Click"/>
+
+                        <Button Content="Назад" 
+                                Height="40"
+                                Style="{StaticResource SecondaryButton}"
+                                Click="btnBackToStart_Click"/>
+
+                        <TextBlock Text="Еще нет аккаунта?" 
+                                   HorizontalAlignment="Center" 
+                                   Margin="0,15,0,5"
+                                   Foreground="{StaticResource SecondaryText}"/>
+                        <TextBlock Text="Зарегистрироваться" 
+                                   HorizontalAlignment="Center"
+                                   Foreground="{StaticResource AccentText}"
+                                   FontWeight="SemiBold"
+                                   Cursor="Hand"
+                                   MouseLeftButtonDown="switchToRegister_MouseLeftButtonDown"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- Register View -->
+            <Border x:Name="registerPanel"
+                    Background="{StaticResource SecondaryBackground}" 
+                    Width="380" 
+                    CornerRadius="8"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1"
+                    Padding="30"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="Collapsed">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="2" Direction="315" Opacity="0.2" BlurRadius="8"/>
+                </Border.Effect>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel>
+                        <!-- Logo and Title (smaller version) -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,25">
+                            <Image Source="/Image/logo.png" Width="40" Height="40" Margin="0,0,10,0"/>
+                            <TextBlock Text="Flavouru" 
+                                       VerticalAlignment="Center" 
+                                       FontSize="24" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="{StaticResource AccentText}"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Создание аккаунта" 
+                                   FontSize="22" 
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,25"/>
+
+                        <TextBlock Text="Имя пользователя:" Margin="0,0,0,5"/>
+                        <TextBox x:Name="txtRegisterUsername" Margin="0,0,0,15"/>
+
+                        <TextBlock Text="Email:" Margin="0,0,0,5"/>
+                        <TextBox x:Name="txtRegisterEmail" Margin="0,0,0,15"/>
+
+                        <TextBlock Text="Пароль:" Margin="0,0,0,5"/>
+                        <PasswordBox x:Name="txtRegisterPassword" Margin="0,0,0,15"/>
+
+                        <TextBlock Text="Подтвердите пароль:" Margin="0,0,0,5"/>
+                        <PasswordBox x:Name="txtRegisterConfirmPassword" Margin="0,0,0,25"/>
+
+                        <Button Content="Зарегистрироваться" 
+                                Height="45" 
+                                Click="btnRegister_Click" 
+                                Margin="0,0,0,20"/>
+
+                        <Button Content="Назад" 
+                                Height="40"
+                                Style="{StaticResource SecondaryButton}"
+                                Click="btnBackToStart_Click"/>
+
+                        <TextBlock Text="Уже есть аккаунт?" 
+                                   HorizontalAlignment="Center" 
+                                   Margin="0,15,0,5"
+                                   Foreground="{StaticResource SecondaryText}"/>
+                        <TextBlock Text="Войти" 
+                                   HorizontalAlignment="Center"
+                                   Foreground="{StaticResource AccentText}"
+                                   FontWeight="SemiBold"
+                                   Cursor="Hand"
+                                   MouseLeftButtonDown="switchToLogin_MouseLeftButtonDown"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <!-- Footer -->
+        <TextBlock Grid.Row="2" 
+                   Text="© 2025 Flavouru. Все права защищены." 
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Bottom"
+                   Foreground="{StaticResource SecondaryText}"
+                   Margin="0,0,0,15"/>
+    </Grid>
+</Window>

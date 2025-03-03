@@ -7,10 +7,8 @@ namespace Flavouru.Desktop
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
-            var startWindow = new StartWindow();
-            startWindow.Show();
         }
     }
 }
+
 
