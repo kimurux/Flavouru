@@ -1,0 +1,41 @@
+<Window x:Class="Flavouru.Desktop.RecipeDetailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Детали рецепта" 
+        Height="700" Width="800"
+        MinWidth="650" MinHeight="550"
+        MaxWidth="1200" MaxHeight="900">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Text="{Binding Title}" FontSize="24" FontWeight="Bold" Grid.Row="0"/>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
+            <TextBlock Text="Время подготовки: "/>
+            <TextBlock Text="{Binding PrepTime}"/>
+            <TextBlock Text=" мин, Время готовки: "/>
+            <TextBlock Text="{Binding CookTime}"/>
+            <TextBlock Text=" мин, Порции: "/>
+            <TextBlock Text="{Binding Servings}"/>
+        </StackPanel>
+        
+        <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Grid.Row="2" Margin="0,10,0,0"/>
+        
+        <TextBlock Text="Инструкции:" FontWeight="Bold" Grid.Row="3" Margin="0,10,0,0"/>
+        <TextBox Text="{Binding Instructions}" TextWrapping="Wrap" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Grid.Row="4"/>
+        
+        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,10,0,0">
+            <Button Content="Просмотреть комментарии" Click="btnViewComments_Click" Margin="0,0,10,0"/>
+            <TextBox x:Name="txtComment" Width="300" Margin="0,0,10,0"/>
+            <Button Content="Отправить комментарий" Click="btnSendComment_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
+
