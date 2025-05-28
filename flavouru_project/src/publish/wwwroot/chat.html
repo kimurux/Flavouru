@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Flavouru Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .login-container, .chat-container {
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .message-list {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .message.sent {
+            background-color: #e3f2fd;
+            text-align: right;
+        }
+        .message.received {
+            background-color: #f1f1f1;
+        }
+        .message .sender {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        .message .time {
+            font-size: 0.8em;
+            color: #666;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Flavouru Chat</h1>
+        
+        <div id="loginContainer" class="login-container">
+            <div class="form-group">
+                <label for="username">Имя пользователя:</label>
+                <input type="text" id="username" />
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" />
+            </div>
+            <button id="loginButton">Войти</button>
+            <p id="loginError" style="color: red;"></p>
+        </div>
+        
+        <div id="chatContainer" class="chat-container hidden">
+            <div class="form-group">
+                <label for="userSelect">Выберите пользователя:</label>
+                <select id="userSelect"></select>
+                <button id="refreshUsersButton">Обновить</button>
+            </div>
+            
+            <div id="messageList" class="message-list"></div>
+            
+            <div class="form-group">
+                <label for="messageInput">Сообщение:</label>
+                <input type="text" id="messageInput" />
+            </div>
+            <button id="sendButton">Отправить</button>
+            <button id="logoutButton" style="background-color: #f44336; float: right;">Выйти</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+    <script>
+        // Элементы DOM
+        const loginContainer = document.getElementById('loginContainer');
+        const chatContainer = document.getElementById('chatContainer');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginButton = document.getElementById('loginButton');
+        const loginError = document.getElementById('loginError');
+        const userSelect = document.getElementById('userSelect');
+        const refreshUsersButton = document.getElementById('refreshUsersButton');
+        const messageList = document.getElementById('messageList');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const logoutButton = document.getElementById('logoutButton');
+
+        // Состояние приложения
+        let token = '';
+        let currentUser = null;
+        let connection = null;
+
+        // Обработчики событий
+        loginButton.addEventListener('click', login);
+        refreshUsersButton.addEventListener('click', loadUsers);
+        sendButton.addEventListener('click', sendMessage);
+        logoutButton.addEventListener('click', logout);
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        userSelect.addEventListener('change', loadMessages);
+
+        // Функции
+        async function login() {
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+            
+            if (!username || !password) {
+                loginError.textContent = 'Введите имя пользователя и пароль';
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Ошибка авторизации');
+                }
+                
+                const data = await response.json();
+                token = data.token;
+                currentUser = {
+                    id: data.userId,
+                    username: data.username,
+                    email: data.email
+                };
+                
+                // Переключаем на чат
+                loginContainer.classList.add('hidden');
+                chatContainer.classList.remove('hidden');
+                
+                // Загружаем пользователей
+                await loadUsers();
+                
+                // Подключаемся к SignalR
+                await connectToSignalR();
+                
+            } catch (error) {
+                loginError.textContent = error.message;
+            }
+        }
+        
+        async function loadUsers() {
+            try {
+                const response = await fetch('/api/users', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Не удалось загрузить пользователей');
+                }
+                
+                const users = await response.json();
+                
+                // Очищаем список
+                userSelect.innerHTML = '';
+                
+                // Добавляем пользователей
+                users.forEach(user => {
+                    if (user.id !== currentUser.id) { // Исключаем текущего пользователя
+                        const option = document.createElement('option');
+                        option.value = user.id;
+                        option.textContent = user.username;
+                        userSelect.appendChild(option);
+                    }
+                });
+                
+                // Загружаем сообщения для первого пользователя
+                if (userSelect.options.length > 0) {
+                    loadMessages();
+                }
+                
+            } catch (error) {
+                console.error('Ошибка загрузки пользователей:', error);
+            }
+        }
+        
+        async function loadMessages() {
+            const selectedUserId = userSelect.value;
+            if (!selectedUserId) return;
+            
+            try {
+                const response = await fetch(`/api/chat/messages/${selectedUserId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Не удалось загрузить сообщения');
+                }
+                
+                const messages = await response.json();
+                
+                // Очищаем список сообщений
+                messageList.innerHTML = '';
+                
+                // Добавляем сообщения
+                messages.forEach(message => {
+                    addMessageToUI(message);
+                });
+                
+                // Прокручиваем к последнему сообщению
+                messageList.scrollTop = messageList.scrollHeight;
+                
+            } catch (error) {
+                console.error('Ошибка загрузки сообщений:', error);
+            }
+        }
+        
+        async function sendMessage() {
+            const content = messageInput.value.trim();
+            const receiverId = userSelect.value;
+            
+            if (!content || !receiverId) return;
+            
+            try {
+                const messageDto = {
+                    content,
+                    receiverId
+                };
+                
+                // Отправляем через SignalR
+                if (connection && connection.state === 'Connected') {
+                    await connection.invoke('SendMessage', messageDto);
+                } else {
+                    // Запасной вариант через API
+                    await fetch('/api/chat/send', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(messageDto)
+                    });
+                }
+                
+                // Очищаем поле ввода
+                messageInput.value = '';
+                
+            } catch (error) {
+                console.error('Ошибка отправки сообщения:', error);
+            }
+        }
+        
+        function addMessageToUI(message) {
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${message.senderId === currentUser.id ? 'sent' : 'received'}`;
+            
+            const senderElement = document.createElement('div');
+            senderElement.className = 'sender';
+            senderElement.textContent = message.senderName;
+            
+            const contentElement = document.createElement('div');
+            contentElement.className = 'content';
+            contentElement.textContent = message.content;
+            
+            const timeElement = document.createElement('div');
+            timeElement.className = 'time';
+            timeElement.textContent = new Date(message.sentAt).toLocaleString();
+            
+            messageElement.appendChild(senderElement);
+            messageElement.appendChild(contentElement);
+            messageElement.appendChild(timeElement);
+            
+            messageList.appendChild(messageElement);
+            messageList.scrollTop = messageList.scrollHeight;
+        }
+        
+        async function connectToSignalR() {
+            // Создаем подключение
+            connection = new signalR.HubConnectionBuilder()
+                .withUrl(`/chatHub?access_token=${token}`)
+                .withAutomaticReconnect()
+                .build();
+            
+            // Обработчик получения сообщения
+            connection.on('ReceiveMessage', (message) => {
+                // Проверяем, относится ли сообщение к текущему диалогу
+                if (message.senderId === currentUser.id || 
+                    (message.senderId.toString() === userSelect.value || 
+                     message.receiverId.toString() === userSelect.value)) {
+                    addMessageToUI(message);
+                }
+            });
+            
+            // Запускаем подключение
+            try {
+                await connection.start();
+                console.log('SignalR подключен');
+            } catch (err) {
+                console.error('Ошибка подключения SignalR:', err);
+            }
+        }
+        
+        function logout() {
+            // Отключаем SignalR
+            if (connection) {
+                connection.stop();
+            }
+            
+            // Сбрасываем состояние
+            token = '';
+            currentUser = null;
+            
+            // Переключаем на форму входа
+            chatContainer.classList.add('hidden');
+            loginContainer.classList.remove('hidden');
+            loginError.textContent = '';
+        }
+        
+        // Проверяем, есть ли сохраненный токен
+        const savedToken = localStorage.getItem('authToken');
+        if (savedToken) {
+            token = savedToken;
+        }
+    </script>
+</body>
+</html>
+
