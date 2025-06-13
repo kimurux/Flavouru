@@ -2,6 +2,7 @@ import './reg.css'
 import { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import logo from "../assets/img/logo.svg";
 
 function Registration() {
 
@@ -11,7 +12,6 @@ function Registration() {
     const [email, setEmail] = useState<string>('');
     const [error, setErrorState] = useState<string>('');
     const [isModalOpen, setModalOpen] = useState<boolean>(false);
-    const users = [];
 
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setPassword(e.target.value);
@@ -48,7 +48,7 @@ function Registration() {
     setErrorState('');
 
     try {
-        await axios.post('http://92.248.255.123:5000/api/Auth/register', {
+        await axios.post('http://92.248.255.123:5000/auth/register', {
         username,
         email,
         password,
@@ -63,12 +63,28 @@ function Registration() {
         <div className='main'>
             <div className='reg__container'>
                 {error && <div className="alert__error">{error}</div>}
-                <h2 style={{fontSize: '32px'}}> Регистрация </h2>
+                <div className='login__logo'>
+                    <img src={logo} alt='svg' className='login__logo-img'/>
+                    <div className='sign__choice'>
+                        <div className='sign-in__block'>
+                            <Link to="/">
+                                Логин
+                            </Link>
+                        </div>
+                        <div className='divider'></div>
+                        <div className='sign-up__block'>
+                            <Link to="/Registration">
+                                Регистрация
+                            </Link>
+                        </div>
+                    </div>
+                </div>
                 <div className='reg__field'>
                     <form onSubmit={ConfirmRegistration}>
-                        <label htmlFor="username">Введите ваш логин:</label>
+                        <label htmlFor="username"></label>
                         <input 
                         className='reg__field-input'
+                        placeholder='Ваш логин'
                         type="text"
                         id="username"
                         name="username"
@@ -76,9 +92,10 @@ function Registration() {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         />
-                        <label htmlFor="email">Введите вашу почту:</label>
+                        <label htmlFor="email"></label>
                         <input
-                        className='reg__field-input' 
+                        className='reg__field-input'
+                        placeholder='Ваша почта' 
                         type="email"
                         id="email"
                         name="email"
@@ -86,9 +103,10 @@ function Registration() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         />
-                        <label htmlFor="new-password">Введите ваш пароль:</label>
+                        <label htmlFor="new-password"></label>
                         <input
-                        className='reg__field-input' 
+                        className='reg__field-input'
+                        placeholder='Ваш пароль' 
                         type="password"
                         id="new-password"
                         name="new-password"
@@ -96,9 +114,10 @@ function Registration() {
                         value={password}
                         onChange={handlePasswordChange}
                         />
-                        <label htmlFor="password-redo">Введите пароль снова:</label>
+                        <label htmlFor="password-redo"></label>
                         <input
-                        className='reg__field-input' 
+                        className='reg__field-input'
+                        placeholder='Повторите пароль' 
                         type="password"
                         id="password-redo"
                         name="password-redo"

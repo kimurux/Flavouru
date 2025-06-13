@@ -1,11 +1,75 @@
-.reg__container {
+.reset__container {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   display: flex;
-  align-items: center;
   flex-direction: column;
-  justify-content: center;
-  height: 50%;
-  width: 35%;
-  border: 5px solid black;
-  background-color: antiquewhite;
-  border-radius: 3rem;
+  align-items: center;
+  gap: 1em;
+}
+
+.reset__desc {
+    width: 100%;
+    height: 22%;
+}
+
+.reset__choice {
+    width: 100%;
+    height: 50%;
+}
+
+.reset__choice form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+.hidden-radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.reset_choice__button {
+    width: 40%;
+    height: 40px;
+    border-radius: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: white;
+    color: black;
+    font-weight: bold;
+}
+
+.hidden-radio:checked + .reset_choice__button {
+    background-color: rgb(70, 190, 255);
+    color: white;   
+}
+
+.reset__button button {
+  margin-top: 2em;
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .reset__container {
+    padding: 20px 15px;
+  }
 }

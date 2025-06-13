@@ -1,57 +1,61 @@
 .reg__container {
   display: flex;
-  align-items: center;
   flex-direction: column;
-  justify-content: space-evenly;
-  height: 75%;
-  width: 35%;
-  border: 5px solid black;
-  background-color: antiquewhite;
-  border-radius: 3rem;
-  color: coral;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  padding: 30px 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .reg__field {
-    width: 55%;
-    height: 60%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-bottom: 8em;
+  width: 100%;
+  margin: 20px 0;
 }
 
 .reg__field-input {
-    border-radius: 0.5em;
-    padding: 3px;
-    width: 100%;
-    height: 13%;
-    border: 2px solid rgb(92, 92, 92);
-    color: black;
-    background-color: azure;
+  width: 100%;
+  padding: 12px 15px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
 }
 
-.reg__confirm {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    height: 20%;
-    margin-top: 2em;
+.reg__confirm button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.modal {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgb(0, 0, 0.5);
+.reg__confirm button:hover {
+  background-color: #0056b3;
 }
 
-.modal__content {
-    text-align: center;
-    border-radius: 3em;
+.alert__error {
+  color: #dc3545;
+  font-size: 14px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .reg__container {
+    padding: 20px 15px;
+  }
+  
+  .reg__field-input,
+  .reg__confirm button {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
 }

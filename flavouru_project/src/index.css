@@ -1,10 +1,9 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Rubik', sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
+  color: black;
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
   background-image: url('./assets/img/bg.png');
   
 
@@ -16,11 +15,11 @@
 
 a {
   font-weight: 500;
-  color: coral;
+  color: black;
   text-decoration: inherit;
 }
 a:hover {
-  color: rgb(228, 111, 68);
+  color: rgb(70, 190, 255)
 }
 
 html, body {
@@ -38,18 +37,17 @@ h1 {
 }
 
 button {
+  background-color: #646cff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  font-weight: bold;
+  transition: 0.3s;
   cursor: pointer;
-  transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #bcc0ff;
 }
 button:focus,
 button:focus-visible {
