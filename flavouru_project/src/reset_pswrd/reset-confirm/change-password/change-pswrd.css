@@ -1,0 +1,44 @@
+.change-password__container {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.change-password__container input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.change-password__container button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .change-password__container {
+    padding: 20px 15px;
+    gap: 15px;
+  }
+  
+  .change-password__container input,
+  .change-password__container button {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}

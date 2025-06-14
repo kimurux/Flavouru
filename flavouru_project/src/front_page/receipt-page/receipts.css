@@ -1,0 +1,167 @@
+/* Стили для страницы рецептов */
+.receipt__search-up {
+  display: flex;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.receipt__search-up input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: white;
+  color: black;
+}
+
+.receipt__preference {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.receipt__preference button {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  color: black;
+}
+
+.receipts__container.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  cursor: pointer;
+}
+
+.receipt-item.cards {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  transition: transform 0.3s;
+}
+
+.receipts__text-content {
+    display: block;
+    padding: 10px;
+}
+
+.receipt-item.cards:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.receipt-item.cards:hover img {
+    filter: brightness(1);
+}
+
+.receipt-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  filter: brightness(0.7);
+  transition: filter 0.3s;
+}
+
+.receipt-item__content {
+  padding: 15px;
+}
+
+.receipts__container.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Close spacing between items */
+}
+
+.receipt-item.list {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  transition: all 0.3s;
+  cursor: pointer;
+  min-height: 80px; /* Thin blocks */
+}
+
+.receipt-item.list:hover {
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.receipt-item.list img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-right: 15px;
+  filter: brightness(0.8);
+  transition: filter 0.3s;
+  flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+.receipt-item.list:hover img {
+  filter: brightness(1);
+}
+
+.receipt-item.list .recipe-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0; /* Allow text to wrap properly */
+}
+
+.receipt-item.list h3 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.receipt-item.list p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limit to 2 lines */
+  -webkit-box-orient: vertical;
+}
+
+.receipts__container.cards .recipe-content {
+    padding: 10px;
+}
+
+/* Mobile adaptation for list view */
+@media (max-width: 768px) {
+  .receipt-item.list {
+    padding: 10px;
+    min-height: 70px;
+  }
+
+  .receipt-item.list img {
+    width: 50px;
+    height: 50px;
+    margin-right: 12px;
+  }
+
+  .receipt-item.list h3 {
+    font-size: 15px;
+  }
+
+  .receipt-item.list p {
+    font-size: 13px;
+  }
+}
+
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+  .receipts__container.cards {
+    grid-template-columns: 1fr;
+  }
+}
